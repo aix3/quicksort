@@ -1,54 +1,40 @@
 package quicksort
 
 // QuickSort is a quick sort impl
-func QuickSort(array []int, start, end int) {
-	if len(array) <= 1 {
+func QuickSort(arr []int, left, right int) {
+	if left == right {
 		return
 	}
-	first := array[start]
+	base := arr[left]
+	var i = right
+	var j = left
 
-	var i = end
-	var j = start
-	var c int
-
-out:
-	for ; i >= j; i-- {
-		if i == j {
-			swap(array, start, i)
-			c = i
-			break
+	for i > j {
+		for arr[i] >= base && i > j {
+			i--
 		}
-		if array[i] < first {
-			for ; j <= i; j++ {
-				if i == j {
-					swap(array, start, i)
-					c = i
-					break out
-				}
-				if array[j] > first {
-					swap(array, j, i)
-					break
-				}
-			}
+		for arr[j] <= base && j < i {
+			j++
+		}
+		if i != j {
+			swap(arr, i, j)
 		}
 	}
-
-	if c > start {
-		QuickSort(array, start, c-1)
+	if left != i {
+		swap(arr, left, i)
 	}
 
-	if c < end {
-		QuickSort(array, c+1, end)
+	if i > left {
+		QuickSort(arr, left, i-1)
+	}
+
+	if j < right {
+		QuickSort(arr, j+1, right)
 	}
 }
 
 func swap(array []int, i, j int) {
-	if i == j {
-		return
-	}
-	// fmt.Println("Before swap: ", array[i], array[j])
 	array[i] ^= array[j]
 	array[j] ^= array[i]
 	array[i] ^= array[j]
-	// fmt.Println("After swap: ", array[i], array[j])
 }
